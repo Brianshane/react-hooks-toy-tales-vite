@@ -10,11 +10,28 @@ function ToyContainer() {
 .catch(error=>console.error("error fetching toys"))
     
   },[]);
-
-
+ function handleAddToy(newToy) {
+    // POST request to backend to save the new toy
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newToy)
+    })
+      .then(res => res.json())
+      .then(savedToy => {
+        // Update state with the newly saved toy
+        setToys([...toys, savedToy]);
+      })
+      .catch(error => console.error('Error adding toy:', error));
+  }
 
   return (
+    <>
+    <ToyForm onAddToy={handleAddToy} />
     <div id="toy-collection">{toys.map(toy =>(<ToyCard key={toy.id} toy={toy} />))}</div>
+  </>
   );
 }
 
