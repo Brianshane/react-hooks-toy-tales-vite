@@ -1,47 +1,46 @@
-
 import React, { useState } from "react";
 
 function ToyForm({ onAddToy }) {
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [formData, setFormData] = useState({ name: "", image: "" });
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    const newToy = {
-      name,
-      image,
-      likes: 0
-    };
-
-    onAddToy(newToy);
-
-    setName("");
-    setImage("");
+    onAddToy({ ...formData, likes: 0 });
+    setFormData({ name: "", image: "" });
   }
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit}>
+      <form className="add-toy-form" onSubmit={handleSubmit}>
+        <h3>Create a toy!</h3>
         <input
           type="text"
           name="name"
-          placeholder="Toy's name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          required
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Enter a toy's name..."
+          className="input-text"
         />
-
+        <br />
         <input
           type="text"
           name="image"
-          placeholder="Toy's image URL"
-          value={image}
-          onChange={e => setImage(e.target.value)}
-          required
+          value={formData.image}
+          onChange={handleChange}
+          placeholder="Enter a toy's image URL..."
+          className="input-text"
         />
-
-        <button type="submit">Add Toy</button>
+        <br />
+        <input
+          type="submit"
+          name="submit"
+          value="Create New Toy"
+          className="submit"
+        />
       </form>
     </div>
   );
